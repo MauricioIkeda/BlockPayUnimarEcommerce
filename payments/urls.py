@@ -1,8 +1,8 @@
 # payments/urls.py
 from django.urls import path
-from .views import CheckPaymentView, PayView
+from . import views
 
 urlpatterns = [
-    path('pay/<uuid:vendedor_id>/', PayView.as_view(), name='pay'),
-    path('check-payment/<int:payment_id>/', CheckPaymentView.as_view(), name='check-payment'),
+    path('pay/<int:vendedor_id>/', views.pagar_blockpay, name='pay'),
+    path('check-payment/<int:payment_id>/', views.checar_pagamento, name='check-payment'),
 ]
