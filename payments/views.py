@@ -11,14 +11,14 @@ class CreatePaymentView(View):
         try:
             order = Order.objects.get(id=order_id)
         except Order.DoesNotExist:
-            return JsonResponse({"error": "Pedido não encontrado")
+            return JsonResponse({"error": "Pedido não encontrado"})
             
         payment, created = Payment.objects.get_or_create(
-            order = order
+            order = order,
             defaults={
             "seller": order.vendedor,
             "initial_balance": get_usdt_balance(order.vendedor.perfil.wallet_address),
-            "amount_brl": oder.valor_total_pedido,
+            "amount_brl": order.valor_total_pedido,
             }
         )
 
