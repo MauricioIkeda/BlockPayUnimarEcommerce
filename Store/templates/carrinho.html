@@ -31,8 +31,8 @@
                     <div class='cart-info-vendedor'>
                         <p class='cart-total-price'>Total para este vendedor: R$ {{ info.subtotal }}</p>
                         <div class="payment-method-buttons">
-                            <a class="payment-button MP" href="">Pagar com Mercado Pago</a>
-                            <a class="payment-button BP" href="">Pagar com BlockPay</a>
+                            <a class="payment-button MP" href="{% url 'pagamento' vendedor_id=vendedor.id %}">Pagar com Mercado Pago</a>
+                            <a class="payment-button BP" href="{% url 'pay' vendedor_id=vendedor.id %}">Pagar com BlockPay</a>
                         </div>
                     </div>
                 </div>

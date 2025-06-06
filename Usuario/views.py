@@ -288,8 +288,6 @@ def adicionar_produto(request, username):
 
     return redirect("home")
 
-
-
 def excluir_produto(request, id_produto):
     produto = get_object_or_404(Produto, id=id_produto)
 
