@@ -8,19 +8,19 @@ from Core.settings import ADDRESS
 
 class CreatePaymentView(APIView):
     def post(self, request, payment_amount):
-        temp_wallet_address = BSCWallet().create_temp_wallet()
-        moonpay_link = generate_moonpay_link(ADDRESS, payment_amount)
+        address = ""#<- puxar o endereço do vendedor aqui
+        moonpay_link = generate_moonpay_link(address, payment_amount)
         qr_code = generate_qr_base64(moonpay_link)
 
         payment = Payment.objects.create(
-            address=temp_wallet_address['address'],
-            private_key=temp_wallet_address['private_key'],
-            amount_received=payment_amount,
+            seller_address=address,
+            initial_balance=get_usdt_balance(address),
+            amount_brl = payment_amount
         )
 
         return Response({
             "payment_id": payment.id,
-            "temp_wallet_address": temp_wallet_address['address'],
+            "wallet_address": seller_address,
             "moonpay_link": moonpay_link,
             "qr_code": qr_code,
         })
