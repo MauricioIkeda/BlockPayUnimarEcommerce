@@ -305,6 +305,10 @@ def excluir_produto(request, id_produto):
 
 def vendas(request):
     orders = request.user.order_seller.all()
+
+    for order in orders:
+        order.checar_pagamento()
+
     return render(request, "vendas.html", {"orders": orders})
 
 
