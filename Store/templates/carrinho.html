@@ -34,7 +34,7 @@
                             {% if vendedor.perfil.mp_connected %}
                                 <a class="payment-button MP" href="{% url 'pagamento' vendedor_id=vendedor.id %}">Pagar com Mercado Pago</a>
                             {% endif %}
-                            {% if vendedor.perfil.wallet_address %}
+                            {% if vendedor.perfil.wallet_address and item.subtotal >= 130%}
                                 <a class="payment-button BP" href="{% url 'pay' vendedor_id=vendedor.id %}">Pagar com BlockPay</a>
                             {% endif %}
                         </div>
