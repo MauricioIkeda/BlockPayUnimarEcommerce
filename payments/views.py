@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.http import JsonResponse
 from .models import Payment
-from .services.bsc import get_usdt_balance
 from .services.qr import generate_moonpay_link, generate_qr_base64
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from Store.models import Carrinho, ItemOrder, Order
 from decimal import Decimal
+from payments.services.bsc import get_usdt_balance
 
 def pagar_blockpay(request, vendedor_id):
     vendedor = get_object_or_404(User, id=vendedor_id)
@@ -32,6 +32,7 @@ def pagar_blockpay(request, vendedor_id):
         )
 
     order.valor_total_pedido = subtotal_vendedor
+    order.initial_balance = get_usdt_balance(vendedor.perfil.wallet_address)
     order.save()
 
     moonpay_link = generate_moonpay_link(
