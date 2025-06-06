@@ -15,14 +15,21 @@ def pagar_blockpay(request, vendedor_id):
 
     itens_para_pagar = carrinho.itens.filter(produto__vendedor=vendedor)
 
-    order = Order.objects.create(vendedor=vendedor, comprador=request.user)
+    subtotal_vendedor = Decimal("0.00")
 
-    subtotal_vendedor = 0
+    order = Order.objects.create(vendedor=vendedor, comprador=request.user)
 
     for item in itens_para_pagar:
         preco_item = Decimal(str(item.produto.preco))
         subtotal_item = item.quantidade * preco_item
         subtotal_vendedor += subtotal_item
+
+        ItemOrder.objects.create(
+            order=order,
+            produto=item.produto,
+            quantidade=item.quantidade,
+            preco=preco_item,
+        )
 
     order.valor_total_pedido = subtotal_vendedor
     order.save()
@@ -30,6 +37,8 @@ def pagar_blockpay(request, vendedor_id):
     moonpay_link = generate_moonpay_link(
         vendedor.perfil.wallet_address, order.valor_total_pedido
     )
+
+    itens_para_pagar.delete()
     
     return redirect(moonpay_link)
 
