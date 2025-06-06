@@ -17,6 +17,8 @@ def pagar_blockpay(request, vendedor_id):
 
     order = Order.objects.create(vendedor=vendedor, comprador=request.user)
 
+    subtotal_vendedor = 0
+
     for item in itens_para_pagar:
         preco_item = Decimal(str(item.produto.preco))
         subtotal_item = item.quantidade * preco_item
