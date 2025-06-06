@@ -21,7 +21,7 @@ def generate_qr_base64(url: str) -> str:
 
 def generate_moonpay_link(wallet_address: str, amount_brl: float = 130.00) -> str:
     base_url = "https://buy.moonpay.com"
-    params = f"?walletAddress={wallet_address}&currencyCode=bnb_bsc&baseCurrencyCode=brl&baseCurrencyAmount={amount_brl}"
+    params = f"?walletAddress={wallet_address}&currencyCode=usdt_bsc&baseCurrencyCode=brl&baseCurrencyAmount={amount_brl}"
     url = base_url + params
 
     return url
