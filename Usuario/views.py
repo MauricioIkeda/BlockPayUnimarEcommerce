@@ -280,7 +280,7 @@ def adicionar_produto(request, username):
             produto.save()
 
             return redirect("perfil_user", username=request.user.username)
-        elif not perfil.mp_connected and request.POST.get("preco") < 130.0:
+        elif not perfil.mp_connected and float(request.POST.get("preco")) < 130.0:
             messages.error(
                 request, ("Você so tem o metodo BlockPay cadastrado que so suporta valor minimo de 130!")
             )
