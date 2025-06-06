@@ -70,7 +70,7 @@
     align-items: center;
     justify-content: center;
     padding: 12px 24px;
-    background-color: #009EE3;
+    background-color: #00b894;
     color: #fff;
     font-size: 16px;
     font-weight: bold;
@@ -81,9 +81,31 @@
     transition: background-color 0.3s ease;
 }
 .mp-button:hover {
+    background-color: #019170;
+    color: #fff;
+}
+
+.bp-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background-color: #009EE3;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+.bp-button:hover {
     background-color: #0089cc;
     color: #fff;
 }
+
 .btn-generic {
     display: inline-block;
     margin: 5px;

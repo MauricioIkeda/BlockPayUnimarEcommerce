@@ -4,10 +4,10 @@
 
 {% block body %}
 <div class="seller-panel">
-    <h2>Painel do Vendedor</h2>
+    <h2>Mercado Pago</h2>
 
     {% if not usuario.perfil.wallet_address %}
-        <p>Tudo certo para começar! O último passo é conectar sua conta do Mercado Pago para que você possa receber o dinheiro das suas vendas de forma segura.</p>
+        <p>Basta clicar no botão "Conectar com Mercado Pago" abaixo e autorizar todas as permissões para começar a vender e pode receber por este metodo!</p>
         <div style="margin-top: 20px;">
             <a href="{% url 'conectar_mp' %}" class="mp-button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 12px;">
@@ -17,4 +17,22 @@
             </a>
         </div>
     {% endif %}
+</div>
+
+<div class="seller-panel">
+    <h2>BlockPay</h2>
+
+    {% if not usuario.perfil.wallet_address %}
+        <p>Basta colocar seu Endereço da carteira do Metamask BSC para receber por este metodo de pagamento!</p>
+        <div style="margin-top: 20px;">
+            <form action="{% url 'metodos_pagamentos' %}" method="POST"> {% csrf_token %}
+                <input class="form-input" type="text" name='endereco_carteira' value="{{ request.user.perfil.wallet_address|default_if_none:'' }}">
+                <div>
+                    <input class="bp-button" type="submit" value="Conectar BlockPay">
+                </div>
+            </form>
+        </div>
+    {% endif %}
+</div>
+
 {% endblock body %}

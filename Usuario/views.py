@@ -184,14 +184,14 @@ def editar_perfil(request, username):
 def lista_produtos(request, username):
     usuario = get_object_or_404(User, username=username)
 
-    if request.user.username == username:
+    if request.user.username == username and usuario.perfil.mp_connected or usuario.perfil.wallet_address:
         return render(
             request,
             "lista_produtos.html",
             {"usuario": usuario, "usuariousername": username},
         )
     else:
-        return redirect("home")
+        return redirect("metodos_pagamentos")
 
 
 def editar_produto(request, id_produto):
@@ -260,25 +260,31 @@ def adicionar_produto(request, username):
 
         subcategoria_obj = get_object_or_404(Subcategoria, id=subcategoria_id)
 
-        produto = Produto(vendedor=request.user)
-        produto.nome = request.POST.get("nome")
-        produto.descricao = request.POST.get("descricao")
-        produto.preco = request.POST.get("preco")
-        produto.quantidade = request.POST.get("quantidade_estoque")
+        if perfil.mp_connected:
+            produto = Produto(vendedor=request.user)
+            produto.nome = request.POST.get("nome")
+            produto.descricao = request.POST.get("descricao")
+            produto.preco = request.POST.get("preco")
+            produto.quantidade = request.POST.get("quantidade_estoque")
 
-        produto.subcategoria = subcategoria_obj
+            produto.subcategoria = subcategoria_obj
 
-        imagem = request.FILES.get("imagem")
-        if imagem:
-            fs = FileSystemStorage(
-                location="media/uploads/produtos/", base_url="/media/uploads/produtos/"
+            imagem = request.FILES.get("imagem")
+            if imagem:
+                fs = FileSystemStorage(
+                    location="media/uploads/produtos/", base_url="/media/uploads/produtos/"
+                )
+                filename = fs.save(imagem.name, imagem)
+                produto.imagem = "uploads/produtos/" + filename
+
+            produto.save()
+
+            return redirect("perfil_user", username=request.user.username)
+        elif not perfil.mp_connected and request.POST.get("preco") < 130.0:
+            messages.error(
+                request, ("Você so tem o metodo BlockPay cadastrado que so suporta valor minimo de 130!")
             )
-            filename = fs.save(imagem.name, imagem)
-            produto.imagem = "uploads/produtos/" + filename
-
-        produto.save()
-
-        return redirect("perfil_user", username=request.user.username)
+            return redirect("home")
 
 
 def excluir_produto(request, id_produto):
@@ -310,8 +316,19 @@ def vendas_details(request, order_id):
     return render(request, "vendas_details.html", {"itemOrders": itemOrders})
 
 def metodos_pagamentos(request):
-    return render(request, "metodos_pagamentos.html")
 
+    if request.method == "GET":
+        return render(request, "metodos_pagamentos.html")
+
+    elif request.method == "POST":
+        endereco_carteira = request.POST.get("endereco_carteira")
+        if endereco_carteira:
+            request.user.perfil.wallet_address = endereco_carteira
+            request.user.perfil.vendedor = True
+
+            request.user.perfil.save()
+
+        return redirect("metodos_pagamentos")
 
 def conectar_mercado_pago(request):
     if not request.user.is_authenticated:

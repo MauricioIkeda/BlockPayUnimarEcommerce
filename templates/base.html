@@ -58,6 +58,9 @@
                                 {% if request.user.perfil.vendedor%}
                                     <a href="{% url 'vendas' %}">Vendas</a>
                                 {% endif %}
+                                {% if user.perfil.vendedor %}
+                                    <a href="{% url "metodos_pagamentos"%}">Metodos Recebimento</a>
+                                {% endif %}
                                 <a href="{% url "deslogar" %}">Deslogar</a>
                             {% else %}
                                 <a href="{% url "cadastrar" %}">Registrar</a>
