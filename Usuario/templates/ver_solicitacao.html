@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class='div-produto-lista'>
+        {% for solicitacao in solicitacoes %}
+            <div class='solicitation' style="width: 450px;" href="{% url 'home' %}">
+                <div class='solicitation-info'>
+                    <p>{{solicitacao.nome_completo}} - {{solicitacao.cpf}}</p>
+                    <p>{{solicitacao.descricao}}</p>
+                </div>
+
+                <div class='solicitation-command'>
+                    <a class='solicitation-accept' href="{% url 'aceitar_solicitacao' username=solicitacao.usuario.username %}">Aceitar</a>
+                    <a class='solicitation-recuse' href="{% url 'recusar_solicitacao' username=solicitacao.usuario.username %}">Recusar</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock body %}

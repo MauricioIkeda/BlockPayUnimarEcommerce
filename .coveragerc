@@ -1,0 +1,12 @@
+[run]
+omit =
+    */migrations/*
+    */admin.py
+    */tests.py
+    manage.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __str__
+    if __name__ == "__main__":

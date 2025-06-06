@@ -1,0 +1,45 @@
+.solicitation {
+    background-color: rgb(0, 91, 170);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.solicitation p {
+    color: white;
+    text-align: center;
+}
+
+.solicitation a {
+    text-decoration: none;
+    text-align: center;
+}
+
+.solicitation-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.solicitation-command {
+    display: flex;
+    gap: 15px;
+}
+
+.solicitation-accept,
+.solicitation-recuse {
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.solicitation-accept {
+    color: rgb(0, 190, 0);
+}
+
+.solicitation-recuse {
+    color: rgb(197, 0, 0);
+}

@@ -1,0 +1,130 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Unimar Ecommerce</title>
+
+        <link rel="stylesheet" href="{% static 'styles/header.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/general.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/footer.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/banner.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/products-home.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/form.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/messages.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/perfil-user.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/product-list.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/product-edit.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/product-page.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/cart.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/vendas.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/vendas-details.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/solicitacao.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/category-home.css' %}">
+
+        <link rel="stylesheet" href="{% static 'styles/about.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <a href="{% url "home" %}">
+                    <img class="unimar-logo" src="{% static 'assets/unimar-logo.png' %}">
+                </a>
+
+                <nav class="navbar">
+                    <ul>
+                        <li class="hide-on-mobile"><a href="{% url "home" %}">Inicio</a></li>
+                        {% if request.user.is_superuser%}
+                            <li><a href="{% url 'ver_solicitacao' %}">Ver Solicitações</a></li>
+                        {% endif %}
+                        {% if request.user.is_authenticated and not request.user.perfil.vendedor %}
+                            <li><a href="{% url 'solicitar_vendedor' %}">Tornar Vendedor</a></li>
+                        {% endif %}
+                        <li class="hide-on-mobile"><a href="{% url "sobre" %}">Sobre</a></li>
+                    </ul>
+                </nav>
+
+                <div class="left-container">
+                    <div class="account-menu">
+                        <a id="account-menu-button">Conta</a>
+                        <div class="account-menu-dropdown" id="account-menu-dropdown">
+                            {% if user.is_authenticated %}
+                                <a href="{% url "perfil_user" request.user.username %}">Perfil</a>
+                                {% if request.user.perfil.vendedor%}
+                                    <a href="{% url 'vendas' %}">Vendas</a>
+                                {% endif %}
+                                <a href="{% url "deslogar" %}">Deslogar</a>
+                            {% else %}
+                                <a href="{% url "cadastrar" %}">Registrar</a>
+                                <a href="{% url "logar" %}">Logar</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <a class="cart-button" href="{% url "carrinho" %}">
+                        <img src="{% static 'assets/icons/cart-icon.png' %}">
+                        <span class="cart-text">Carrinho</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            {% block body %}{% endblock body %}
+        </main>
+
+        <footer class="footer">
+            &copy; 2025 Unimar, Inc. ou suas afiliadas
+        </footer>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                const accountMenuButton = document.getElementById('account-menu-button');
+                const accountMenuDropdown = document.getElementById('account-menu-dropdown');
+
+                if (accountMenuButton) {
+                    accountMenuButton.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                        document.querySelectorAll('.category-menu.is-open').forEach(m => m.classList.remove('is-open'));
+                        accountMenuDropdown.classList.toggle('is-open');
+                    });
+                }
+
+                const categoryToggleButtons = document.querySelectorAll('.category-toggle-btn');
+
+                categoryToggleButtons.forEach(button => {
+                    button.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                        const parentMenu = this.closest('.category-menu');
+                        const isAlreadyOpen = parentMenu.classList.contains('is-open');
+
+                        document.querySelectorAll('.category-menu.is-open').forEach(m => m.classList.remove('is-open'));
+
+                        if (accountMenuDropdown) accountMenuDropdown.classList.remove('is-open');
+
+                        if (!isAlreadyOpen) {
+                            parentMenu.classList.add('is-open');
+                        }
+                    });
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (accountMenuDropdown && accountMenuDropdown.classList.contains('is-open') && !accountMenuButton.contains(event.target)) {
+                        accountMenuDropdown.classList.remove('is-open');
+                    }
+
+                    const openCategoryMenu = document.querySelector('.category-menu.is-open');
+                    if (openCategoryMenu && !openCategoryMenu.contains(event.target)) {
+                        openCategoryMenu.classList.remove('is-open');
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

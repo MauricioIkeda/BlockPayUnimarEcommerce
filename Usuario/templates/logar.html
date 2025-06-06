@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="messages-box {{ message.level_tag }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="form">
+        <form class='form-unimar' action="{% url 'logar' %}" method="POST"> {% csrf_token %}
+
+            <h1>Logue-se!</h1>
+
+            <div class='form-field'>
+                <p>Usuario</p>
+                <input class="form-input" type="text" name='usuario'>
+            </div>
+
+            <div class='form-field'>
+                <p>Senha</p>
+                <input class="form-input" type="password" name='senha'>
+            </div>
+
+            <div class='form-field'>
+                <input class="form-button" type="submit" value="Logar">
+            </div>
+
+        </form>
+    </div>
+{% endblock body %}

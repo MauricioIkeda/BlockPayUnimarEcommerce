@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load l10n %}
+
+{% block body %}
+    <div class="product-edit-div">
+        <form class='form-unimar' action="{% url 'editar_produto' id_produto=produto.id %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+
+            <div class='form-field'>
+                <p>Nome</p>
+                <input class="form-input" type="text" name='nome' value="{{ produto.nome }}">
+            </div>
+
+            <div class='form-field'>
+                <p>Descrição</p>
+                <textarea class="form-input-bios" type="text" name='descricao'>{{ produto.descricao }}</textarea>
+            </div>
+
+            <div class='form-field'>
+                <p>Preço</p>
+                <input class="form-input" type="number" name='preco' step="any" value="{% localize off %}{{ produto.preco }}{% endlocalize %}">
+            </div>
+
+            <div class='form-field'>
+                <p>Quantidade Estoque</p>
+                <input class="form-input" type="number" name='quantidade_estoque' step="1" min="0" value="{{ produto.quantidade }}">
+            </div>
+
+            <div class='form-field'>
+                <p>Imagem Produto</p>
+                <img class="product-edit-img" src="{{ produto.imagem.url }}">
+                <label for="id_image" class="custom-file-upload">
+                    Escolher imagem
+                </label>
+                <input type="file" name="imagem" id="id_image" hidden>
+            </div>
+
+            <div class='form-field'>
+                <input class="form-button" type="submit" value="Salvar">
+            </div>
+
+        </form>
+
+    </div>
+{% endblock body %}

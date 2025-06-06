@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="messages-box {{ message.level_tag }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="form">
+        <form class='form-unimar' action="{% url 'solicitar_vendedor' %}" method="POST"> {% csrf_token %}
+
+            <h1>Venda seus produtos!</h1>
+
+            <div class='form-field'>
+                <p>Nome Completo</p>
+                <input class="form-input" type="text" name='nome-completo'>
+            </div>
+
+            <div class='form-field'>
+                <p>CPF</p>
+                <input class="form-input" type="text" name='cpf'>
+            </div>
+
+            <div class='form-field'>
+                <p>Quais produtos pretende vender?</p>
+                <textarea class="form-input-bios" type="text" name='produtos-a-vender'></textarea>
+            </div>
+
+            <div class='form-field'>
+                <input class="form-button" type="submit" value="Solicitar">
+            </div>
+
+        </form>
+    </div>
+{% endblock body %}

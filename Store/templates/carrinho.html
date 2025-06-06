@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class='cart-main'>
+        {% if itens_por_vendedor %}
+            <div class='cart-products-div'>
+                {% for vendedor, info in itens_por_vendedor.items %}
+                    <div class="vendedor-cart-section">
+                        <h3 class="vendedor-nome">Vendido por: {{ vendedor.first_name|default:vendedor.username }}</h3>
+
+                        {% for item in info.itens %}
+                            <div class='cart-product-horizontal'>
+                                <img class='cart-product-image' src="{{ item.produto.imagem.url }}">
+                                <div class='cart-product-vertical'>
+                                    <p class='cart-product-name'>{{ item.produto.nome }}</p>
+                                    <div class='cart-product-horizontal-quantity'>
+                                        <a class='cart-product-add' href="{% url 'adicionar_carrinho' item.produto.id 1 %}">+</a>
+                                        <p class='cart-product-quantity'>Quantidade: {{ item.quantidade }}</p>
+                                        <a class='cart-product-minius' href="{% url 'remover_carrinho' item.produto.id %}">-</a>
+                                    </div>
+                                </div>
+                                <div class='cart-product-vertical-2'>
+                                    <p class='cart-product-price'>Valor Unitário: R$ {{ item.produto.preco }}</p>
+                                    <p class='cart-product-price'>Subtotal do item: R$ {{ item.subtotal }}</p>
+                                    <a class='cart-product-exclude' href="{% url 'excluir_carrinho' item.produto.id %}">Excluir</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class='cart-info-vendedor'>
+                            <p class='cart-total-price'>Total para este vendedor: R$ {{ info.subtotal }}</p>
+                            <a class='cart-finish-button' href="{% url 'pagamento' vendedor_id=vendedor.id %}">Pagar Vendedor {{ vendedor.first_name|default:vendedor.username }}</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="cart-total-geral">
+                <h3>Valor total do carrinho: R$ {{ total_carrinho }}</h3>
+            </div>
+
+        {% else %}
+            <div class="carrinho-vazio">
+                <h1>Seu carrinho está vazio!</h1>
+                <a href="{% url 'home' %}">Ver produtos</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock body %}

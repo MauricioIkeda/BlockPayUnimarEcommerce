@@ -1,0 +1,20 @@
+.messages-box {
+    position: absolute;
+    top: 175px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}
+
+.success {
+    background-color: #daf8d7;
+    color: #34721c;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}

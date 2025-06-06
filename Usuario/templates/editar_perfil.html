@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="messages-box">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="form">
+        <form class='form-unimar' action="{% url 'editar_perfil' username=request.user.username %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+
+            <h1>Editar Perfil!</h1>
+
+            <div class='form-field'>
+                <p>Nome</p>
+                <input class="form-input" type="text" name='nome' value="{{ usuario.first_name }}">
+            </div>
+
+            <div class='form-field'>
+                <p>Bios</p>
+                <textarea class="form-input-bios" name='bios'>{{ usuario.perfil.bios }}</textarea>
+            </div>
+
+            <div class='form-field'>
+                <p>Foto de Perfil</p>
+                <label for="id_image" class="custom-file-upload">
+                    Escolher imagem
+                </label>
+                <input type="file" name="foto_perfil" id="id_image" hidden>
+            </div>
+
+            <div class='form-field-horizontal'>
+                <input class="form-button" name='salvar' type="submit" value="Salvar Perfil">
+                <input class="form-button back-red text-white" name='excluir' type="submit" onclick="return confirm('Tem certeza que deseja excluir este perfil?');" value="Excluir Perfil">
+            </div>
+
+        </form>
+    </div>
+{% endblock body %}

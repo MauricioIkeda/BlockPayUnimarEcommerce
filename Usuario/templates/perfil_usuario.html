@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+    <div class="div-perfil">
+        <img class="foto-perfil" src="{{usuario.perfil.foto.url}}" alt="">
+
+        <div class="info-perfil">
+            <div class="info-perfil-row1">
+                <h1 class="nome-perfil">{{usuario.first_name}}</h1>
+
+                <p class="bios-perfil">{{usuario.perfil.bios}}</p>
+            </div>
+
+            <div class="info-perfil-row2">
+                {% if request.user == usuario %}
+                    <a class="editar-perfil" href="{% url "editar_perfil" request.user %}">Editar Perfil</a>
+                    {% if usuario.perfil.vendedor == True %}
+                        <a class="lista_produtos" href="{% url "lista_produtos" request.user %}">Editar Produtos</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="produtos-perfil">
+        <p>Produtos a Venda</p>
+    </div>
+
+    <div class="div-perfil-produtos">
+        <div class="produtos-perfil-showcase">
+            {% if usuario.produtos.all %}
+                {% for produto in usuario.produtos.all %}
+                    {% if produto.quantidade > 0 %}
+                        <div class="product">
+                            <img src="{{produto.imagem.url}}">
+                            <p class="product-name">{{produto.nome}}</p>
+                            <p class="product-price">R${{produto.preco}}</p>
+                            <a href="{% url "pagina_produto" produto.id %}">Ver</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <h1>Não possui produtos a venda!</h1>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock body %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+    <div class='product-page-div'>
+        <img src="{{ produto.imagem.url }}">
+
+        <div class='product-page-info-1'>
+            <h1>{{ produto.nome }}</h1>
+            <p class='product-page-seller'>Vendido por: {{ produto.vendedor.first_name }}</p>
+            <p class='product-page-descricao'>{{ produto.descricao }}</p>
+        </div>
+
+        <div class='product-page-info-2'>
+            <div class='product-page-preco-div'>
+                <p class='RS'>R$</p>
+                <p class='product-page-preco'>{{ produto.preco }}</p>
+            </div>
+
+            <p class='product-page-estoque'>Estoque: {{ produto.quantidade }}</p>
+
+            <form class='product-page-cart-form' method="POST" action="{% url 'pagina_produto' id_produto=produto.id %}"> {% csrf_token %}
+                <p>Quantidade:</p>
+                <input type="number" class="product-page-quantity-input" name="quantidade" value="1" min="1" max="{{produto.quantidade}}"/>
+                <input type="submit" class="product-page-add-cart" value='Adicionar ao Carrinho'/>
+            </form>
+        </div>
+    </div>
+{% endblock body %}

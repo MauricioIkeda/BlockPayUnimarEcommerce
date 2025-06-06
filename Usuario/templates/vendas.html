@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+    <h1 class='title'>Vendas</h1>
+
+    <div class='div-vendas-lista'>
+        {% if orders %}
+            {% for order in orders %}
+                <a class='vendas-order' href="{% url 'vendas_details' order.id %}">
+                    <h1>Pedido ID: {{order.id}}</h1>
+                    <p>Data de compra: {{order.data}}</p>
+                    <p>Comprador: {{order.comprador}}</p>
+                    <p>Status: {{order.status_pagamento}}</p>
+                    <p>Valor total: {{order.calcular_valor_total}}</p>
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock body %}

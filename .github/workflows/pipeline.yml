@@ -1,0 +1,65 @@
+name: CI/CD do Marketplace Django
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar ambiente Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Cache de dependências Python
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-python-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+             ${{ runner.os }}-python-
+
+      - name: Instalar dependências e ferramentas
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install black bandit djhtml
+
+      - name: Formatar o código com Black
+        run: black --check .
+
+      - name: Análise de Segurança Estática
+        run: bandit -f json -o bandit_report.json .
+        continue-on-error: true 
+
+      - name: Lint de Templates Django com djhtml
+        run: djhtml --check .
+
+      - name: Checar migrations pendentes
+        run: python manage.py makemigrations --check --dry-run
+
+      - name: Rodar testes com coverage
+        run: |
+          coverage run manage.py test
+          coverage report
+
+      - name: Gerar relatório de cobertura em HTML
+        run: coverage html
+
+      - name: Publicar HTML do coverage como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-html
+          path: htmlcov/
+

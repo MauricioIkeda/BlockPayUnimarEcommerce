@@ -1,0 +1,141 @@
+
+
+.div-produto-lista {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.produto-lista {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    width: auto;
+    margin-bottom: 10px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.produto-lista img{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.produto-lista p {
+    font-size: 17px;
+}
+
+.produto-lista-nome {
+    width: 225px;
+    margin-right: 25px;
+}
+
+.excluir-produto input{
+    background-color: red;
+    color: white;
+    margin-right: 10px;
+    padding: 5px 10px;
+}
+
+.excluir-produto input:hover{
+    background-color: rgb(197, 0, 0);
+    color: white;
+}
+
+.produto-lista a {
+    text-decoration: none;
+    color: white;
+    background-color: rgb(0, 91, 170);
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+/* Estilos para o painel do vendedor no perfil */
+.seller-panel {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 30px 0;
+    text-align: center;
+}
+.seller-panel h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* Estilos para o botão do Mercado Pago */
+.mp-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background-color: #009EE3;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.mp-button:hover {
+    background-color: #0089cc;
+    color: #fff;
+}
+.btn-generic {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.btn-generic:hover {
+    background-color: #218838;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .produto-lista {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+        width: 50%;
+    }
+
+    .produto-lista-nome {
+        width: auto;
+        margin-right: 0;
+    }
+
+    .produto-lista img {
+        width: 100px;
+        height: 100px;
+        margin-top: 10px;
+    }
+
+    .produto-lista a {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    .excluir-produto {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%; 
+    }
+    
+
+    .excluir-produto input {
+        display: block;
+        margin: 0 auto;
+        padding: 5px 10px;
+        margin-bottom: 10px;
+    }
+}

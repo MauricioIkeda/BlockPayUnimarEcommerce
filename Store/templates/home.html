@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="messages-box {{ message.level_tag }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="home-div">
+        <div class="unimar-banner">
+            <p>O melhor Marketplace da Unimar!</p>
+            <img src="{% static 'assets/unimar-banner.webp' %}">
+        </div>
+
+        <div class="container-category">
+            <nav class="navbar-category">
+                {% for categoria in categorias %}
+                    <div class="category-menu">
+                        <a href="{% url "categoria" categoria.nome %}">{{categoria.nome}}</a>
+
+                        {% if categoria.subcategorias.all %}
+                            <span class="category-toggle-btn">▼</span>
+                            <div class="category-menu-dropdown">
+                                {% for subcategoria in categoria.subcategorias.all %}
+                                    <a href="{% url "categoria" subcategoria.nome %}">{{subcategoria.nome}}</a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </nav>
+        </div>
+
+        <div class="products-showcase">
+            {% for produto in produtos %}
+                {% if produto.quantidade > 0 %}
+                    <div class="product">
+                        <img src="{{produto.imagem.url}}">
+                        <p class="product-name">{{produto.nome}}</p>
+                        <p class="product-price">R${{produto.preco}}</p>
+                        <a href="{% url "pagina_produto" produto.id %}">Ver</a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock body %}

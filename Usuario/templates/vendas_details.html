@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+    <h1 class='title'>Produtos Vendidos</h1>
+    <div class='div-lista-item-produto'>
+        {% for itemOrder in itemOrders %}
+            <div class='div-item-produto'>
+                <img src="{{ itemOrder.produto.imagem.url }}">
+                <div class='item-produto-info'>
+                    <h1>{{ itemOrder.produto.nome }}</h1>
+                    <p>Quantidade: {{ itemOrder.quantidade }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock body %}

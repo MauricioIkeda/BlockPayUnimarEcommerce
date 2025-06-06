@@ -1,0 +1,110 @@
+.container-category {
+    position: relative;
+    margin: auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    height: 75px;
+    width: 100%;
+    background-color: rgb(0, 91, 170);
+}
+
+.category-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.category-toggle-btn {
+    font-size: 10px;
+    margin-left: 8px;
+    padding: 4px;
+    user-select: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.category-menu.is-open .category-toggle-btn {
+    transform: rotate(180deg);
+}
+
+.navbar-category {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 25px;
+}
+
+.navbar-category a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.navbar-category a:hover {
+    color: #fffb00;
+}
+
+.category-menu-dropdown {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 7px;
+    min-width: 120px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden; 
+    z-index: 20;
+}
+
+.category-menu.is-open .category-menu-dropdown {
+    display: block;
+}
+
+.category-menu-dropdown a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: rgb(0, 91, 170);
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.category-menu-dropdown a:hover {
+    background-color: #f0f0f0;
+    color: #2600ff;
+}
+
+@media (max-width: 768px) {
+    .container-category {
+        height: 60px;
+        padding: 0 10px;
+    }
+    .navbar-category {
+        width: 100%;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .category-menu {
+        font-size: 10px;
+    }
+
+    .category-menu-dropdown {
+        min-width: 50px;
+    }
+
+    .category-menu-dropdown a {
+        font-size: 10px;
+    }
+}
