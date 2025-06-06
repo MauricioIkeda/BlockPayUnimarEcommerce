@@ -1,40 +1,36 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.http import JsonResponse
 from .models import Payment
 from .services.bsc import get_usdt_balance
 from .services.qr import generate_moonpay_link, generate_qr_base64
-from Store.models import Order
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from Store.models import Carrinho, ItemOrder, Order
+from decimal import Decimal
 
 class PayView(View):
-    def get(self, request, order_id):
-        try:
-            order = Order.objects.get(id=order_id)
-        except Order.DoesNotExist:
-            return JsonResponse({"error": "Pedido não encontrado"}, status=404)
+    def get(self, request, vendedor_id):
+        vendedor = get_object_or_404(User, id=vendedor_id)
+        carrinho = get_object_or_404(Carrinho, usuario=request.user)
 
-        payment, created = Payment.objects.get_or_create(
-            order=order,
-            defaults={
-                'seller': order.vendedor,
-                'initial_balance': get_usdt_balance(order.vendedor.perfil.wallet_address),
-                'amount_brl': order.valor_total_pedido,
-            }
-        )
+        itens_para_pagar = carrinho.itens.filter(produto__vendedor=vendedor)
+
+        order = Order.objects.create(vendedor=vendedor, comprador=request.user)
+
+        for item in itens_para_pagar:
+            preco_item = Decimal(str(item.produto.preco))
+            subtotal_item = item.quantidade * preco_item
+            subtotal_vendedor += subtotal_item
+
+        order.valor_total_pedido = subtotal_vendedor
+        order.save()
 
         moonpay_link = generate_moonpay_link(
-            order.vendedor.perfil.wallet_address, order.valor_total_pedido
+            vendedor.perfil.wallet_address, order.valor_total_pedido
         )
-        qr_code = generate_qr_base64(moonpay_link)
-
-        context = {
-            "payment": payment,
-            "moonpay_link": moonpay_link,
-            "qr_code": qr_code,
-            "wallet_address": order.vendedor.perfil.wallet_address,
-            "amount_brl": order.valor_total_pedido,
-        }
-        return render(request, "pagamento.html", context)
+        
+        return redirect(moonpay_link)
 
 class CheckPaymentView(View):
     def get(self, request, payment_id):
