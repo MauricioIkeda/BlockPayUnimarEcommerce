@@ -45,4 +45,5 @@ urlpatterns = [
     ),
     path("conectar-mp/", views.conectar_mercado_pago, name="conectar_mp"),
     path("mp/callback/", views.mercado_pago_callback, name="mp_callback"),
+    path("metodos_pagamentos/", views.metodos_pagamentos, name="metodos_pagamentos")
 ]

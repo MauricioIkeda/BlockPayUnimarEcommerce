@@ -309,6 +309,9 @@ def vendas_details(request, order_id):
     itemOrders = order.itens.all()
     return render(request, "vendas_details.html", {"itemOrders": itemOrders})
 
+def metodos_pagamentos(request):
+    return render(request, "metodos_pagamentos.html")
+
 
 def conectar_mercado_pago(request):
     if not request.user.is_authenticated:

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+<div class="seller-panel">
+    <h2>Painel do Vendedor</h2>
+
+    {% if not usuario.perfil.wallet_address %}
+        <p>Tudo certo para começar! O último passo é conectar sua conta do Mercado Pago para que você possa receber o dinheiro das suas vendas de forma segura.</p>
+        <div style="margin-top: 20px;">
+            <a href="{% url 'conectar_mp' %}" class="mp-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 12px;">
+                    <path d="M20.4158 3.58421C18.1579 1.32631 15.1789 0 12 0C8.82105 0 5.84211 1.32631 3.58421 3.58421C1.32631 5.84211 0 8.82105 0 12C0 15.1789 1.32631 18.1579 3.58421 20.4158C5.84211 22.6737 8.82105 24 12 24C15.1789 24 18.1579 22.6737 20.4158 20.4158C22.6737 18.1579 24 15.1789 24 12C24 8.82105 22.6737 5.84211 20.4158 3.58421ZM12.0232 17.5158C9.28842 17.5158 7.03158 15.2589 7.03158 12.5242C7.03158 9.78947 9.28842 7.53263 12.0232 7.53263C13.8821 7.53263 15.4842 8.52631 16.3537 10.0421H12.8758V12.0232H18.0632C17.9305 15.2589 15.2821 17.5158 12.0232 17.5158Z" fill="white"/>
+                </svg>
+                Conectar com Mercado Pago
+            </a>
+        </div>
+{% endblock body %}
