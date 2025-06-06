@@ -256,35 +256,38 @@ def adicionar_produto(request, username):
         subcategoria_id = request.POST.get("subcategoria")
 
         if not subcategoria_id:
+            messages.error(request, "Você precisa selecionar uma subcategoria.")
             return redirect("adicionar_produto", username=request.user.username)
 
         subcategoria_obj = get_object_or_404(Subcategoria, id=subcategoria_id)
 
-        if perfil.mp_connected:
-            produto = Produto(vendedor=request.user)
-            produto.nome = request.POST.get("nome")
-            produto.descricao = request.POST.get("descricao")
-            produto.preco = request.POST.get("preco")
-            produto.quantidade = request.POST.get("quantidade_estoque")
-
-            produto.subcategoria = subcategoria_obj
-
-            imagem = request.FILES.get("imagem")
-            if imagem:
-                fs = FileSystemStorage(
-                    location="media/uploads/produtos/", base_url="/media/uploads/produtos/"
-                )
-                filename = fs.save(imagem.name, imagem)
-                produto.imagem = "uploads/produtos/" + filename
-
-            produto.save()
-
-            return redirect("perfil_user", username=request.user.username)
-        elif not perfil.mp_connected and float(request.POST.get("preco")) < 130.0:
+        if not perfil.mp_connected and float(request.POST.get("preco")) < 130.0:
             messages.error(
-                request, ("Você so tem o metodo BlockPay cadastrado que so suporta valor minimo de 130!")
+                request, "Você só tem o método BlockPay cadastrado, que suporta apenas valores mínimos de R$130!"
             )
             return redirect("home")
+
+        produto = Produto(vendedor=request.user)
+        produto.nome = request.POST.get("nome")
+        produto.descricao = request.POST.get("descricao")
+        produto.preco = request.POST.get("preco")
+        produto.quantidade = request.POST.get("quantidade_estoque")
+        produto.subcategoria = subcategoria_obj
+
+        imagem = request.FILES.get("imagem")
+        if imagem:
+            fs = FileSystemStorage(
+                location="media/uploads/produtos/", base_url="/media/uploads/produtos/"
+            )
+            filename = fs.save(imagem.name, imagem)
+            produto.imagem = "uploads/produtos/" + filename
+
+        produto.save()
+        messages.success(request, "Produto adicionado com sucesso!")
+        return redirect("perfil_user", username=request.user.username)
+
+    return redirect("home")
+
 
 
 def excluir_produto(request, id_produto):
