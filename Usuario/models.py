@@ -22,5 +22,7 @@ class Profile(models.Model):
     mp_access_token = models.CharField(max_length=255, blank=True, null=True)
     mp_refresh_token = models.CharField(max_length=255, blank=True, null=True)
 
+    wallet_address = models.CharField(max_length=255, blank=True, null=True)
+
     def __str__(self):
         return self.usuario.first_name
