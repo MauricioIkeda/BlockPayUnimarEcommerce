@@ -1,4 +1,4 @@
-﻿asgiref==3.8.1
+asgiref==3.8.1
 certifi==2025.4.26
 charset-normalizer==3.4.2
 coverage==7.8.2
@@ -14,3 +14,5 @@ tzdata==2025.2
 urllib3==2.4.0
 black
 flake8
+web3
+qrcode
