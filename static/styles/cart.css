@@ -189,3 +189,37 @@
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
 }
+
+.payment-method-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.payment-button {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.payment-button.MP {
+    background-color: #00b894;
+}
+
+.payment-button.MP:hover {
+    background-color: #019170;
+}
+
+.payment-button.BP {
+    background-color: #0984e3;
+}
+
+.payment-button.BP:hover {
+    background-color: #0468b7;
+}
+
