@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 import uuid
-
+from payments.services.bsc import get_usdt_balance
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=50)
@@ -70,6 +70,10 @@ class Order(models.Model):
     status_pagamento = models.CharField(max_length=50, default="pendente")
     data = models.DateTimeField(auto_now_add=True)
 
+    metodo_pagamento = models.CharField(max_length=50, null=True, blank=True)
+
+    initial_balance = models.FloatField(default=0)
+
     def __str__(self):
         return f"Pedido {str(self.id)} - {self.comprador.username}"
 
@@ -77,6 +81,13 @@ class Order(models.Model):
     @property
     def calcular_valor_total(self):
         return sum(item.subtotal for item in self.itens.all())
+    
+    def checar_pagamento(self):
+        balance = get_usdt_balance(self.vendedor.perfil.wallet_address)
+
+        if balance > self.initial_balance:
+                self.status_pagamento = "pago"
+                self.save()
 
 
 class ItemOrder(models.Model):
